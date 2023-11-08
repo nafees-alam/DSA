@@ -23,11 +23,7 @@ class Solution {
         }
         if(val > root.val){
             root.right = insertIntoBST(root.right, val);
-        }// } else{
-        //     TreeNode temp = root.left;
-        //     root.left = new TreeNode(val);
-        //     root.left.left = temp;
-        // }
+        }
 
         return root;
     }
