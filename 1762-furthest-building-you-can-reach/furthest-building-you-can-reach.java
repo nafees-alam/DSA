@@ -7,10 +7,10 @@ class Solution {
 
             if(diff > 0){
                 pq.add(diff);
-                if(pq.size() > ladders){
+            }
+            if(pq.size() > ladders){
                     bricks -= pq.poll();
                 }
-            }
             if(bricks < 0){
                 return i;
             }
