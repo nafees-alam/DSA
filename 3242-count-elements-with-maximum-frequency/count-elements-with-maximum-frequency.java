@@ -3,11 +3,7 @@ class Solution {
         HashMap<Integer, Integer> map = new HashMap<>();
 
         for(int val : nums){
-            if(map.containsKey(val)){
-                map.put(val, map.get(val) + 1);
-            } else {
-                map.put(val , 1);
-            }
+            map.put(val, map.getOrDefault(val, 0) + 1);
         }
 
         int max = 0;
