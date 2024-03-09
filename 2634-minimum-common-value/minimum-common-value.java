@@ -1,22 +1,23 @@
 class Solution {
     public int getCommon(int[] nums1, int[] nums2) {
-        HashSet<Integer> set = new HashSet<>();
-        ArrayList<Integer> list = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+        int i = 0;
+        int j = 0;
 
-        for(int val : nums1){
-            set.add(val);
-        }
-        for(int i = 0; i < nums2.length; i++){
-            if(set.contains(nums2[i])){
-                list.add(nums2[i]);
+        while(i < nums1.length && j < nums2.length){
+            if(nums1[i] == nums2[j]){
+                min = Math.min(nums1[i], min);
+                j++;
+            } else if(nums1[i] > nums2[j]){
+                j++;
+            } else {
+                i++;
             }
         }
 
-        if(list.size() == 0){
+        if(min == Integer.MAX_VALUE){
             return -1;
         }
-
-        Collections.sort(list);
-        return list.remove(0);
+        return min;
     }
 }
