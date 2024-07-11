@@ -11,7 +11,7 @@ class Solution {
             if(st.isEmpty()){
                 ans++;
             }
-             else if(st.peek() == '(' && s.charAt(i) == ')'){
+             else{
                 st.pop();
             }
            }
