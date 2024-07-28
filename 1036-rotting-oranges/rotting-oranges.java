@@ -2,16 +2,13 @@ class Solution {
     public int orangesRotting(int[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
-        int[][] vis = new int[n][m];
+        int[][] vis = grid;
         Queue<Pair> q = new LinkedList<>();
         int countFresh = 0;
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(grid[i][j] == 2){
                     q.add(new Pair(i, j, 0));
-                    vis[i][j] = 2;
-                } else {
-                    vis[i][j] = 0;
                 }
                 if(grid[i][j] == 1){
                     countFresh++;
@@ -36,7 +33,7 @@ class Solution {
                 int co = col + delcol[i];
 
                 if(ro >= 0 && ro < n && co >= 0 && co < m
-                && vis[ro][co] == 0 && grid[ro][co] == 1){
+                && vis[ro][co] != 2 && grid[ro][co] == 1){
                     q.add(new Pair(ro, co, t+1));
                     vis[ro][co] = 2;
                     count++;
