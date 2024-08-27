@@ -10,7 +10,7 @@ class Solution {
             adj.get(edges[i][1]).add(new Pair(edges[i][0], succProb[i]));
         }
 
-        Queue<Pair> q = new LinkedList<>();
+        PriorityQueue<Pair> q = new PriorityQueue<>((x, y) -> Double.compare(y.prob, x.prob));
         q.add(new Pair(start_node, 1));
         double[] dist = new double[n];
         Arrays.fill(dist, 0);
