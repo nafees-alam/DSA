@@ -21,8 +21,10 @@ class Solution {
                 return mid;
             } else if(nums[mid] > nums[mid+1]){
                 e = mid-1;
-            } else {
+            } else if(nums[mid] > nums[mid-1]) {
                 s = mid+1;
+            } else { //to make sure it doesnot fall in infinite loop ex : [1, 5, 1, 2, 1]
+                e = mid-1; //Or s = mid+1
             }
         }
 
