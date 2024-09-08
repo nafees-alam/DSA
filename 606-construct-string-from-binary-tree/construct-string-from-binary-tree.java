@@ -24,8 +24,8 @@ class Solution {
         if(root == null){
             return "";
         }
-        String left = tree2str(root.left);
-        String right = tree2str(root.right);
+        String left = helper(root.left);
+        String right = helper(root.right);
         
         if(root.left == null && root.right == null){
             return "" + root.val;
