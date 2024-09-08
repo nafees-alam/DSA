@@ -11,14 +11,16 @@ class Solution {
                 countZeros++;
             }
 
-            while(countZeros > k){
+            if(countZeros > k){
                 if(nums[l] == 0){
                     countZeros--;
                 }
                 l++;
             }
 
-            maxlen = Math.max(maxlen, r-l+1);
+            if(countZeros <= k){
+                maxlen = Math.max(maxlen, r-l+1);
+            }
             r++;
         }
 
