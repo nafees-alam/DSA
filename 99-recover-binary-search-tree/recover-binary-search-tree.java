@@ -14,32 +14,44 @@
  * }
  */
 class Solution {
+    private TreeNode first;
+    private TreeNode middle;
+    private TreeNode last;
+    private TreeNode prev;
+
     public void recoverTree(TreeNode root) {
-        ArrayList<Integer> list = new ArrayList<>();
-        inOrder(root, list);
-        Collections.sort(list);
+        first = middle = last = null;
+        prev = new TreeNode(Integer.MIN_VALUE);
+        inOrder(root);
 
-        swap(root, list, new int[]{0});
-    }
-
-    public void swap(TreeNode root, ArrayList<Integer> list, int[] i){
-        if(root == null || list.size() == 0){
-            return;
+        if(first != null && last != null){
+            int temp = first.val;
+            first.val = last.val;
+            last.val = temp;
+        } else if(first != null && middle != null){
+            int temp = first.val;
+            first.val = middle.val;
+            middle.val = temp;
         }
-
-        swap(root.left, list, i);
-        root.val = list.get(i[0]);
-        i[0]++;
-        swap(root.right, list, i);
     }
 
-    public void inOrder(TreeNode root, List<Integer> list){
+    public void inOrder(TreeNode root){
         if(root == null){
             return;
         }
 
-        inOrder(root.left, list);
-        list.add(root.val);
-        inOrder(root.right, list);
+        inOrder(root.left);
+        if(prev != null && prev.val > root.val){
+
+            if(first == null){
+                first = prev;
+                middle = root;
+            } else {
+                last = root;
+            }
+
+        }
+        prev = root;
+        inOrder(root.right);
     }
 }
