@@ -1,22 +1,23 @@
 class Solution {
     public int rob(int[] nums) {
-        int n = nums.length;
-        int prev1 = nums[0];
-        int prev2 = 0;
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, -1);
 
-        for(int i = 1; i < n; i++){
-            int pick = nums[i];
-            if(i > 1){
-                pick += prev2;
-            }
-            int notPick = prev1;
+        return solve(nums, nums.length-1, dp);
+    }
 
-            int curri = Math.max(pick, notPick);
-
-            prev2 = prev1;
-            prev1 = curri;
+    int solve(int[] arr, int idx, int[] dp){
+        if(idx < 0){
+            return 0;
         }
 
-        return prev1;
+        if(dp[idx] != -1){
+            return dp[idx];
+        }
+
+        int notPick = solve(arr, idx-1, dp);
+        int pick = arr[idx] + solve(arr, idx-2, dp);
+
+        return dp[idx] = Math.max(pick, notPick);
     }
 }
