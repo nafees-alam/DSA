@@ -1,59 +1,60 @@
 class Solution {
     public int orangesRotting(int[][] grid) {
-        int n = grid.length;
-        int m = grid[0].length;
-        int[][] vis = grid;
-        Queue<Pair> q = new LinkedList<>();
-        int countFresh = 0;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < m; j++){
+        int m = grid.length;
+        int n = grid[0].length;
+        int[] dr = {-1, 0, 1, 0};
+        int[] dc = {0, 1, 0, -1};
+        Queue<Tuple> q = new LinkedList<>();
+        int fresh = 0;
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
                 if(grid[i][j] == 2){
-                    q.add(new Pair(i, j, 0));
-                }
-                if(grid[i][j] == 1){
-                    countFresh++;
+                    q.add(new Tuple(i, j, 0));
+                } else if(grid[i][j] == 1){
+                    fresh++;
                 }
             }
         }
 
-        int count = 0;
-        int[] delrow = {+1, 0, -1, 0};
-        int[] delcol = {0, -1, 0, +1};
+        int cnt = 0;
         int time = 0;
-
+    
         while(!q.isEmpty()){
             int row = q.peek().first;
             int col = q.peek().second;
             int t = q.peek().time;
             q.remove();
-            time = Math.max(t, time);
+            time = t;
 
             for(int i = 0; i < 4; i++){
-                int ro = row + delrow[i];
-                int co = col + delcol[i];
+                int nrow = row + dr[i];
+                int ncol = col + dc[i];
 
-                if(ro >= 0 && ro < n && co >= 0 && co < m
-                && vis[ro][co] != 2 && grid[ro][co] == 1){
-                    q.add(new Pair(ro, co, t+1));
-                    vis[ro][co] = 2;
-                    count++;
+                if(nrow >= 0 && nrow < m && ncol >= 0 && ncol < n && grid[nrow][ncol] == 1){
+                    grid[nrow][ncol] = 2;
+                    q.add(new Tuple(nrow, ncol, t+1));
+                    cnt++;
                 }
             }
         }
 
-        if(count != countFresh) return -1;
+        if(cnt != fresh) {
+            return -1;
+        }
+
         return time;
     }
 }
 
-class Pair {
+class Tuple{
     int first;
     int second;
     int time;
 
-    public Pair(int i, int j, int k){
-        this.first = i;
-        this.second = j;
-        this.time = k;
+    public Tuple(int i, int j, int k){
+        first = i;
+        second = j;
+        time = k;
     }
 }
