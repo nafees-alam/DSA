@@ -1,43 +1,29 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        HashSet<Integer> set = new HashSet<>();
-        for(int i = 0; i < nums.length; i++){
-            set.add(nums[i]);
+        int n = nums.length;
+        int[][] dp = new int[n+1][n+1];
+        for(int[] arr : dp){
+            Arrays.fill(arr, -1);
         }
 
-        int[] arr = new int[set.size()];
-        int i = 0;
-
-        for(int val : set){
-            arr[i] = val;
-            i++;
-        }
-
-        Arrays.sort(arr);
-
-        return lcs(nums, arr);
+        return lis(nums, -1, 0, dp);
     }
 
-    static int lcs(int[] nums, int[] arr){
-        int n = nums.length;
-        int m = arr.length;
-        int[][] dp = new int[n+1][m+1];
-        for(int i = 0; i < n+1; i++){
-            dp[i][0] = 0;
+    public int lis(int[] nums, int prevIdx, int idx, int[][] dp){
+        if(idx == nums.length){
+            return 0;
         }
-        for(int j = 0; j < m+1; j++){
-            dp[0][j] = 0;
+        
+        if(dp[prevIdx+1][idx] != -1){
+            return dp[prevIdx+1][idx];
         }
 
-        for(int i = 1; i < n+1; i++){
-            for(int j = 1; j < m+1; j++){
-                if(nums[i-1] == arr[j-1]){
-                    dp[i][j] = dp[i-1][j-1] + 1;
-                } else{
-                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
-                }
-            }
+        int notTake = lis(nums, prevIdx, idx+1, dp);
+        int take = 0;
+        if(prevIdx == -1 || nums[idx] > nums[prevIdx]){
+            take = 1 + lis(nums, idx, idx+1, dp);
         }
-        return dp[n][m];
+
+        return dp[prevIdx+1][idx] = Math.max(take, notTake);
     }
 }
