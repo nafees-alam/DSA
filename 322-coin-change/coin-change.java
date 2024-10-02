@@ -1,13 +1,28 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
         int n = coins.length;
-        int[][] dp = new int[n][amount+1];
+        int[][] dp = new int[n+1][amount+1];
         for(int[] arr : dp){
-            Arrays.fill(arr, -1);
+            Arrays.fill(arr, Integer.MAX_VALUE-1);
         }
 
-        int result = solve(coins, amount, n-1, dp);
-        return result == Integer.MAX_VALUE ? -1 : result;
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0;
+        }
+
+        for(int i = 1; i < n+1; i++){
+            for(int j = 1; j < amount+1; j++){
+                int notPick = dp[i-1][j];
+                int pick = Integer.MAX_VALUE;
+                if(coins[i-1] <= j){
+                    pick = 1 + dp[i][j - coins[i-1]];
+                }
+
+                dp[i][j] = Math.min(pick, notPick);
+            }
+        }
+        
+        return dp[n][amount] == Integer.MAX_VALUE-1 ? -1 : dp[n][amount];
     }
 
     public int solve(int[] coins, int target, int idx, int[][] dp){
