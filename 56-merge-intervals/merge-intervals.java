@@ -1,35 +1,22 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        int m = intervals[0].length;
         Arrays.sort(intervals, Comparator.comparingDouble(o -> o[0]));
-        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        List<int[]> list = new ArrayList<>();
+        list.add(new int[]{intervals[0][0], intervals[0][1]});
+        int k = 0;
 
-        for(int i = 0; i < intervals.length; i++){
-            int start = intervals[i][0];
-            int end = intervals[i][1];
-
-            if(!list.isEmpty() && end <= list.get(list.size() - 1).get(1)){
-                continue;
+        for(int i = 1; i < n; i++){
+            if(list.get(k)[1] < intervals[i][0]){
+                k++;
+                list.add(new int[]{intervals[i][0], intervals[i][1]});
+            } else{
+                int[] temp = list.get(k);
+                temp[1] = Math.max(intervals[i][1], temp[1]);
             }
-
-            for(int j = i+1; j < intervals.length; j++){
-                if(intervals[j][0] <= end){
-                    end = Math.max(end, intervals[j][1]);
-                } else {
-                    break;
-                }
-            }
-            ArrayList<Integer> ll = new ArrayList<>();
-            ll.add(start);
-            ll.add(end);
-            list.add(new ArrayList<>(ll));
         }
 
-        int[][] ans = new int[list.size()][2];
-
-        for(int i = 0; i < list.size(); i++){
-            ans[i][0] = list.get(i).get(0);
-            ans[i][1] = list.get(i).get(1);
-        }
-        return ans;
+        return list.toArray(new int[list.size()][]);
     }
 }
