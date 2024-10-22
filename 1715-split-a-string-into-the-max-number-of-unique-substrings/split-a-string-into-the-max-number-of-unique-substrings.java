@@ -7,6 +7,10 @@ class Solution {
     }
 
     void solve(String s, Set<String> set, int idx, int cnt, int[] maxCnt){
+        if((cnt + s.length()-idx) <= maxCnt[0]){
+            return;
+        }
+
         if(idx >= s.length()){
             maxCnt[0] = Math.max(maxCnt[0], cnt);
             return;
