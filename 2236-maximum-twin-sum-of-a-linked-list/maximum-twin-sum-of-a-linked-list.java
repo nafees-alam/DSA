@@ -10,8 +10,6 @@
  */
 class Solution {
     public int pairSum(ListNode head) {
-        Stack<Integer> st = new Stack<>();
-
         ListNode slow = head;
         ListNode fast = head;
 
@@ -20,22 +18,31 @@ class Solution {
             slow = slow.next;
         }
 
-        while(slow != null){
-            st.push(slow.val);
-            slow = slow.next;
-        }
+        ListNode headTemp = reverseLL(slow);
 
-        if(st.isEmpty()){
-            return head.val+head.next.val;
-        }
-
+        ListNode temp = head;
         int ans = 0;
-
-        while(!st.isEmpty()){
-            ans = Math.max(ans, head.val+st.pop());
-            head = head.next;
+        while(temp != slow){
+            ans = Math.max(temp.val + headTemp.val, ans);
+            temp = temp.next;
+            headTemp = headTemp.next;
         }
 
         return ans;
+    }
+
+    public ListNode reverseLL(ListNode st){
+        ListNode curr = st;
+        ListNode prev = null;
+        ListNode next = null;
+
+        while(curr != null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
     }
 }
