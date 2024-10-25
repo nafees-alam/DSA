@@ -32,6 +32,8 @@ class Solution {
         }
         if(s.charAt(i) == s.charAt(j)){
             return dp[i][j] = solve(s, i+1, j-1, dp);
+        }else {
+            dp[i][j] = 0;
         }
 
         return dp[i][j];
