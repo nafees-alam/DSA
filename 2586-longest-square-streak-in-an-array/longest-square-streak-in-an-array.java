@@ -1,17 +1,17 @@
 class Solution {
     public int longestSquareStreak(int[] nums) {
         int maxCnt = 1;
-        TreeSet<Long> set = new TreeSet<>();
+        HashSet<Long> set = new HashSet<>();
         for(int i = 0; i < nums.length; i++){
             set.add((long)nums[i]);
         }
-        for(long val : set){
+        for(int i = 0; i < nums.length; i++){
             int cnt = 1;
-            long num = val;
+            long req = (long)Math.pow(nums[i], 2);
 
-            while(set.contains(num * num)){
+            while(set.contains(req)){
                 cnt++;
-                num = num * num;
+                req = (long)Math.pow(req, 2);
             }
 
             maxCnt = Math.max(maxCnt, cnt);
