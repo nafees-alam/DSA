@@ -4,13 +4,16 @@ class Solution {
         int zeroCnt = 0;
         for(int i = 0; i < arr.length; i++){
             set.add(arr[i]);
-            if(arr[i] == 0)
-            zeroCnt++;
+            if(arr[i] == 0){
+                zeroCnt++;
+            }
         }
 
         for(int i = 0; i < arr.length; i++){
-            if(arr[i] == 0 && zeroCnt > 1) return true;
-            if(arr[i] != 0 && set.contains(arr[i]/2) && arr[i] % 2 == 0){
+            if(arr[i] == 0 && zeroCnt > 1){
+                return true;
+            }
+            if(arr[i] != 0 && set.contains(arr[i] * 2)){
                 return true;
             }
         }
