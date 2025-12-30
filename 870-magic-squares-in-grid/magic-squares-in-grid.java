@@ -1,76 +1,55 @@
 class Solution {
     public int numMagicSquaresInside(int[][] grid) {
-        int count = 0;
-        int rows = grid.length;
-        int cols = grid[0].length;
-        for(int i = 0; i < rows-2; i++){
-            for(int j = 0; j < cols-2; j++){
-                if(isMagicMatrix(grid, i, j))
-                count++;
-            }
+        int ans = 0;
+        int n = grid.length;
+        int m = grid[0].length;
+        if(n < 3 || m < 3){
+            return 0;
         }
-        return count;
-    }
-
-    static int findRowSum(int[][] grid, int r, int c){
-        boolean[] vis = new boolean[10];
-        int sum = 0;
-        for(int i = 0; i < 3; i++){
-            int rSum = 0;
-            for(int j = 0; j < 3; j++){
-                int val = grid[r+i][c+j];
-                if(val == 0 || val >= 10 || vis[val]){
-                    return -1;
+        for(int row = 0; row < n-2; row++){
+            for(int col = 0; col < m-2; col++){
+                if(!validMatrix(grid, row, col)){
+                    continue;
                 }
-                vis[val] = true;
-                rSum += val;
-            }
-            if(i == 0){
-                sum = rSum;
-            } else if(sum != rSum){
-                return -1;
+                //rows check
+                int rsum1 = grid[row][col]+grid[row][col+1]+grid[row][col+2];
+                int rsum2 = grid[row+1][col]+grid[row+1][col+1]+grid[row+1][col+2];
+                int rsum3 = grid[row+2][col]+grid[row+2][col+1]+grid[row+2][col+2];
+                if(rsum1 != rsum2 || rsum2 != rsum3){
+                    continue;
+                }
+                //col check
+                int csum1 = grid[row][col]+grid[row+1][col]+grid[row+2][col];
+                int csum2 = grid[row][col+1]+grid[row+1][col+1]+grid[row+2][col+1];
+                int csum3 = grid[row][col+2]+grid[row+1][col+2]+grid[row+2][col+2];
+                if(csum1 != csum2 || csum2 != csum3 || csum1 != rsum1){
+                    continue;
+                }
+
+                //dia check
+                int dia1 = grid[row][col]+grid[row+1][col+1]+grid[row+2][col+2];
+                int dia2 = grid[row+2][col]+grid[row+1][col+1]+grid[row][col+2];
+                if(dia1 != dia2 || dia1 != rsum1 || dia1 != csum1){
+                    continue;
+                }
+
+                ans++;
             }
         }
-        return sum;
+
+        return ans;
     }
 
-    static int findColSum(int[][] grid, int r, int c){
-        int sum = 0;
-        for(int i = 0; i < 3; i++){
-            int cSum = 0;
-            for(int j = 0; j < 3; j++){
-                int val = grid[r+j][c+i];
-                cSum += val;
-            }
-            if(i == 0){
-                sum = cSum;
-            } else if(sum != cSum){
-                return -1;
+    public boolean validMatrix(int[][] grid, int row, int col){
+        int[] check = new int[10];
+        for(int i = row; i <= row+2; i++){
+            for(int j = col; j <= col+2; j++){
+                if(grid[i][j] > 9 || grid[i][j] < 1) return false;
+                if(check[grid[i][j]-1] != 0) return false;
+                check[grid[i][j]-1] = 1;
             }
         }
-        return sum;
-    }
 
-    static int findDiaSum(int[][] grid, int r, int c){
-        int sum1 = grid[r][c] + grid[r+1][c+1] + grid[r+2][c+2];
-        int sum2 = grid[r][c+2] + grid[r+1][c+1] + grid[r+2][c];
-        if(sum1 == sum2){
-            return sum1;
-        } else {
-            return -1;
-        }
-    }
-
-    static boolean isMagicMatrix(int[][] grid, int r, int c){
-        int rSum = findRowSum(grid, r, c);
-        if(rSum == -1) return false;
-        int colSum = findColSum(grid, r, c);
-        if(colSum == -1) return false;
-        int diaSum = findDiaSum(grid, r, c);
-        if(diaSum == -1) return false;
-
-        if(colSum == rSum && colSum == diaSum) return true;
-
-        return false;
+        return true;
     }
 }
