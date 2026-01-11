@@ -18,11 +18,14 @@ class Solution {
         if(root == null){
             return null;
         }
+
         if(root.val == val){
             return root;
-        } else if(val > root.val){
+        }
+
+        if(root.val < val){
             return searchBST(root.right, val);
-        } else {
+        } else{
             return searchBST(root.left, val);
         }
     }
